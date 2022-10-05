@@ -3,9 +3,11 @@ package pl.kurs.equationsolver.services;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class DivideTest {
+import static org.junit.Assert.*;
 
-    Divide divide = new Divide();
+public class SubtractTest {
+
+    Subtract subtract = new Subtract();
 
     @Test
     public void getResult() {
@@ -13,17 +15,13 @@ public class DivideTest {
         int a = 50;
         int b = 10;
 
-        int expectedResult = 5;
+        int expectedResult = 40;
 
-        int result = divide.getResult(a, b);
+        int result = subtract.getResult(a, b);
 
 
         Assert.assertEquals(expectedResult, result);
 
     }
-
-
-
-
 
 }
