@@ -4,5 +4,5 @@ import java.math.BigDecimal;
 
 public interface ISolving {
 
-   Integer getResult(int a, int b);
+   BigDecimal getResult(BigDecimal a, BigDecimal b);
 }

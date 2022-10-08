@@ -18,11 +18,11 @@ public class SolvingEventService implements ISolvingEventService {
 
     @Override
     public void saveEvent(SolvingEvent solvingEvent) {
-        try {
-            Thread.sleep(8000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Thread.sleep(8000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
         solvingEventDao.save(
                 Optional.ofNullable(solvingEvent)
                         .filter(x -> Objects.isNull(x.getId()))

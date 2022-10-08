@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public class Sum implements ISolving {
 
     @Override
-    public Integer getResult(int a, int b) {
-        return a + b;
+    public BigDecimal getResult(BigDecimal a, BigDecimal b) {
+        return a.add(b);
     }
 }

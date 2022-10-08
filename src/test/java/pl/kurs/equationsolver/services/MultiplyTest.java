@@ -3,6 +3,8 @@ package pl.kurs.equationsolver.services;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 import static org.junit.Assert.*;
 
 public class MultiplyTest {
@@ -12,12 +14,12 @@ public class MultiplyTest {
     @Test
     public void getResult() {
 
-        int a = 50;
-        int b = 10;
+        BigDecimal a = BigDecimal.valueOf(50);
+        BigDecimal b = BigDecimal.valueOf(10);
 
-        int expectedResult = 500;
+        BigDecimal expectedResult = BigDecimal.valueOf(500);
 
-        int result = multiply.getResult(a, b);
+        BigDecimal result = multiply.getResult(a, b);
 
 
         Assert.assertEquals(expectedResult, result);

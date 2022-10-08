@@ -3,6 +3,8 @@ package pl.kurs.equationsolver.services;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.math.BigDecimal;
+
 public class DivideTest {
 
     Divide divide = new Divide();
@@ -10,12 +12,12 @@ public class DivideTest {
     @Test
     public void getResult() {
 
-        int a = 50;
-        int b = 10;
+        BigDecimal a = BigDecimal.valueOf(50);
+        BigDecimal b = BigDecimal.valueOf(10);
 
-        int expectedResult = 5;
+        BigDecimal expectedResult = BigDecimal.valueOf(5);
 
-        int result = divide.getResult(a, b);
+        BigDecimal result = divide.getResult(a, b);
 
 
         Assert.assertEquals(expectedResult, result);
