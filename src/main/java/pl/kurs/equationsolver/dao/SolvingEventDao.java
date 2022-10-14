@@ -12,12 +12,13 @@ public class SolvingEventDao implements ISolvingEventDao {
     private EntityManagerFactory factory;
 
     @Override
-    public void save(SolvingEvent solvingEvent) {
+    public SolvingEvent save(SolvingEvent solvingEvent) {
         EntityManager entityManager = factory.createEntityManager();
         EntityTransaction tx = entityManager.getTransaction();
         tx.begin();
         entityManager.persist(solvingEvent);
         tx.commit();
         entityManager.close();
+        return solvingEvent;
     }
 }

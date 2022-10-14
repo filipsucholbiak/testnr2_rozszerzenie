@@ -16,6 +16,10 @@ public class Main {
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(Main.class);
 
         ISolvingService solvingService = ctx.getBean(ISolvingService.class);
+        Sum sum = ctx.getBean(Sum.class);
+        Subtract subtract = ctx.getBean(Subtract.class);
+        Multiply multiply = ctx.getBean(Multiply.class);
+        Divide divide = ctx.getBean(Divide.class);
 
 
         try {

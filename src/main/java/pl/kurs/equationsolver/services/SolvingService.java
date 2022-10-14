@@ -1,6 +1,11 @@
 package pl.kurs.equationsolver.services;
 
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+import pl.kurs.equationsolver.app.Main;
 import pl.kurs.equationsolver.exceptions.InvalidEquationFormatException;
 import pl.kurs.equationsolver.exceptions.UnknownOperatorException;
 import pl.kurs.equationsolver.model.SolvingEvent;
@@ -11,8 +16,10 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Stack;
 
+@ComponentScan(basePackages = "pl.kurs")
 @Service
 public class SolvingService implements ISolvingService {
+
 
     private ISolvingEventService solvingEventService;
 //    private SolvingEventSaveExecutorService solvingEventSaveExecutorService;
@@ -83,9 +90,6 @@ public class SolvingService implements ISolvingService {
 
         SolvingEvent solvingEvent = new SolvingEvent(Timestamp.from(Instant.now()), expression);
 
-//        solvingEventSaveExecutorService.submitAndExecute(
-//                new SolvingEventSaverRunnable(solvingEventService ,solvingEvent)
-//        );
 
         return values.pop();
     }
@@ -102,13 +106,16 @@ public class SolvingService implements ISolvingService {
     }
 
 
-
     public static BigDecimal applyOp(char op,
                                BigDecimal b, BigDecimal a) {
-        Sum sum = new Sum();
-        Divide divide = new Divide();
-        Multiply multiply = new Multiply();
-        Subtract subtract = new Subtract();
+
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(SolvingService.class);
+
+        Sum sum = ctx.getBean(Sum.class);
+        Subtract subtract = ctx.getBean(Subtract.class);
+        Multiply multiply = ctx.getBean(Multiply.class);
+        Divide divide = ctx.getBean(Divide.class);
+
 
         BigDecimal current = new BigDecimal( 0 );
 

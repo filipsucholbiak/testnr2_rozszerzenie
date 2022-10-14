@@ -1,8 +1,11 @@
 package pl.kurs.equationsolver.services;
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 
-public class Multiply implements ISolving {
+@Component
+public class Multiply implements IOperator {
 
     @Override
     public BigDecimal getResult(BigDecimal a, BigDecimal b) {

@@ -1,9 +1,12 @@
 package pl.kurs.equationsolver.services;
 
 
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 
-public class Divide implements ISolving {
+@Component
+public class Divide implements IOperator {
 
     @Override
     public BigDecimal getResult(BigDecimal a, BigDecimal b) {

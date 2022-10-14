@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 @Component
-public class Sum implements IOperator {
+public interface IOperator {
 
-    @Override
-    public BigDecimal getResult(BigDecimal a, BigDecimal b) {
-        return a.add(b);
-    }
+   BigDecimal getResult(BigDecimal a, BigDecimal b);
 }
