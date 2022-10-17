@@ -22,7 +22,6 @@ public class SolvingService implements ISolvingService {
 
 
     private ISolvingEventService solvingEventService;
-//    private SolvingEventSaveExecutorService solvingEventSaveExecutorService;
 
     public SolvingService(ISolvingEventService solvingEventService) {
         this.solvingEventService = solvingEventService;
@@ -32,8 +31,8 @@ public class SolvingService implements ISolvingService {
     public BigDecimal evaluateExpression(String expression) throws InvalidEquationFormatException, UnknownOperatorException {
 
 
-
         char[] tokens = expression.toCharArray();
+        SolvingEvent solvingEvent = new SolvingEvent(Timestamp.from(Instant.now()), expression);
 
         Stack<BigDecimal> values = new Stack<>();
 
@@ -88,7 +87,7 @@ public class SolvingService implements ISolvingService {
                     values.pop(),
                     values.pop()));
 
-        SolvingEvent solvingEvent = new SolvingEvent(Timestamp.from(Instant.now()), expression);
+
 
 
         return values.pop();
@@ -107,7 +106,7 @@ public class SolvingService implements ISolvingService {
 
 
     public static BigDecimal applyOp(char op,
-                               BigDecimal b, BigDecimal a) {
+                                     BigDecimal b, BigDecimal a) {
 
         AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(SolvingService.class);
 
@@ -117,24 +116,24 @@ public class SolvingService implements ISolvingService {
         Divide divide = ctx.getBean(Divide.class);
 
 
-        BigDecimal current = new BigDecimal( 0 );
+        BigDecimal current = new BigDecimal(0);
 
         switch (op) {
             case '+':
-                current = sum.getResult(a,b);
+                current = sum.getResult(a, b);
                 break;
             case '-':
-                current = subtract.getResult(a,b);
+                current = subtract.getResult(a, b);
                 break;
             case '*':
-                current = multiply.getResult(a,b);
+                current = multiply.getResult(a, b);
                 break;
             case '/':
                 if (b.equals(0))
                     throw new
                             UnsupportedOperationException(
                             "nie można dzielić przez 0");
-                current = divide.getResult(a,b);
+                current = divide.getResult(a, b);
                 break;
         }
         return current;

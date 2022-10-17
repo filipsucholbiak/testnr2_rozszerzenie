@@ -16,6 +16,10 @@ public class SolvingEventService implements ISolvingEventService {
         this.solvingEventDao = solvingEventDao;
     }
 
+    public SolvingEventService() {
+
+    }
+
     @Override
     public void saveEvent(SolvingEvent solvingEvent) {
 

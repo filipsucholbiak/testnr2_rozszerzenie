@@ -45,4 +45,5 @@ public class SolvingEvent implements Serializable {
     public String getExpression() {
         return expression;
     }
+
 }
