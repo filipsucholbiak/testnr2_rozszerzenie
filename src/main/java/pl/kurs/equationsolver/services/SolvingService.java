@@ -2,10 +2,8 @@ package pl.kurs.equationsolver.services;
 
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
-import pl.kurs.equationsolver.app.Main;
+
 import pl.kurs.equationsolver.exceptions.InvalidEquationFormatException;
 import pl.kurs.equationsolver.exceptions.UnknownOperatorException;
 import pl.kurs.equationsolver.model.SolvingEvent;
@@ -14,30 +12,41 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.Instant;
-import java.util.Stack;
+import java.util.*;
+
 
 @ComponentScan(basePackages = "pl.kurs")
 @Service
 public class SolvingService implements ISolvingService {
 
-
     private ISolvingEventService solvingEventService;
+
 
     public SolvingService(ISolvingEventService solvingEventService) {
         this.solvingEventService = solvingEventService;
     }
+
+    static final Map<Character, IOperator> I_OPERATOR_MAP = new HashMap<>();
+
+    static {
+        I_OPERATOR_MAP.put('+', new Sum());
+        I_OPERATOR_MAP.put('-', new Subtract());
+        I_OPERATOR_MAP.put('*', new Multiply());
+        I_OPERATOR_MAP.put('/', new Divide());
+
+    }
+
 
     @Override
     public BigDecimal evaluateExpression(String expression) throws InvalidEquationFormatException, UnknownOperatorException {
 
 
         char[] tokens = expression.toCharArray();
-        SolvingEvent solvingEvent = new SolvingEvent(Timestamp.from(Instant.now()), expression);
+
 
         Stack<BigDecimal> values = new Stack<>();
 
-        Stack<Character> ops = new
-                Stack<Character>();
+        Stack<Character> ops = new Stack<Character>();
 
         for (int i = 0; i < tokens.length; i++) {
 
@@ -53,7 +62,7 @@ public class SolvingService implements ISolvingService {
                         tokens[i] >= '0' &&
                         tokens[i] <= '9')
                     sbuf.append(tokens[i++]);
-                values.push(BigDecimal.valueOf(Integer.parseInt(sbuf.
+                values.push(BigDecimal.valueOf(Double.parseDouble(sbuf.
                         toString())));
 
                 i--;
@@ -87,7 +96,10 @@ public class SolvingService implements ISolvingService {
                     values.pop(),
                     values.pop()));
 
+        SolvingEvent solvingEvent = new SolvingEvent(Timestamp.from(Instant.now()), expression);
 
+
+        new SolvingEventSaverRunnable(solvingEventService, solvingEvent);
 
 
         return values.pop();
@@ -97,48 +109,41 @@ public class SolvingService implements ISolvingService {
             char op1, char op2) {
         if (op2 == '(' || op2 == ')')
             return false;
-        if ((op1 == '*' || op1 == '/') &&
-                (op2 == '+' || op2 == '-'))
-            return false;
-        else
-            return true;
+        return (op1 != '*' && op1 != '/') ||
+                (op2 != '+' && op2 != '-');
     }
 
 
-    public static BigDecimal applyOp(char op,
-                                     BigDecimal b, BigDecimal a) {
-
-        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(SolvingService.class);
-
-        Sum sum = ctx.getBean(Sum.class);
-        Subtract subtract = ctx.getBean(Subtract.class);
-        Multiply multiply = ctx.getBean(Multiply.class);
-        Divide divide = ctx.getBean(Divide.class);
-
+    public static BigDecimal applyOp(char op, BigDecimal b, BigDecimal a) {
 
         BigDecimal current = new BigDecimal(0);
 
         switch (op) {
             case '+':
-                current = sum.getResult(a, b);
+                current = I_OPERATOR_MAP.get('+').getResult(a, b);
                 break;
             case '-':
-                current = subtract.getResult(a, b);
+                current = I_OPERATOR_MAP.get('-').getResult(a, b);
                 break;
             case '*':
-                current = multiply.getResult(a, b);
+                current = I_OPERATOR_MAP.get('*').getResult(a, b);
                 break;
             case '/':
                 if (b.equals(0))
                     throw new
                             UnsupportedOperationException(
                             "nie można dzielić przez 0");
-                current = divide.getResult(a, b);
+                current = I_OPERATOR_MAP.get('/').getResult(a, b);
                 break;
         }
         return current;
+
     }
+
 }
+
+
+
 
 
 

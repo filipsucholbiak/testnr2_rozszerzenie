@@ -4,5 +4,5 @@ import pl.kurs.equationsolver.model.SolvingEvent;
 
 public interface ISolvingEventDao {
 
-    SolvingEvent save(SolvingEvent solvingEvent);
+    void save(SolvingEvent solvingEvent);
 }

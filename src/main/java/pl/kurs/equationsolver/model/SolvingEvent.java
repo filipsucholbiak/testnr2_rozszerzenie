@@ -22,12 +22,10 @@ public class SolvingEvent implements Serializable {
 
     }
 
-
     public SolvingEvent(Timestamp date, String expression) {
         this.date = date;
         this.expression = expression;
     }
-
 
 
     public long getId() {
