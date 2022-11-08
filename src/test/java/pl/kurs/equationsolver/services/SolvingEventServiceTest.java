@@ -3,39 +3,34 @@ package pl.kurs.equationsolver.services;
 import org.junit.Assert;
 import org.junit.Test;
 
-
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.test.context.junit4.SpringRunner;
-import pl.kurs.equationsolver.dao.ISolvingEventDao;
-import pl.kurs.equationsolver.dao.SolvingEventDao;
 import pl.kurs.equationsolver.model.SolvingEvent;
 import pl.kurs.equationsolver.model.SolvingEventRepository;
-
 
 import javax.annotation.Resource;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.List;
+
+
 
 
 public class SolvingEventServiceTest {
 
 
-    @Resource
+    @Autowired
     private SolvingEventRepository solvingEventRepository;
+
 
 
     @Test
     public void SaveEventTest() {
 
+        solvingEventRepository.save(new SolvingEvent(Timestamp.from(Instant.now()), "2+2*2"));
 
-        SolvingEvent solvingEvent1 = new SolvingEvent(Timestamp.from(Instant.now()), "2+2*2");
-        solvingEventRepository.save(solvingEvent1);
 
-        SolvingEvent savedEvent = solvingEventRepository.findByExpression(solvingEvent1.getExpression());
-        Assert.assertEquals("2+2*2", savedEvent);
+        List<SolvingEvent> solvingEventList = solvingEventRepository.getByExpression("2+2*2");
+        Assert.assertEquals("2+2*2", solvingEventList.get(0).getExpression());
 
 
     }
