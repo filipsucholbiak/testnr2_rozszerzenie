@@ -30,7 +30,7 @@ public class JpaConfig {
         LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
         emf.setJpaVendorAdapter(adapter);
         emf.setJpaVendorAdapter(adapter);
-        emf.setPackagesToScan("pl.kurs.equationsolver.model");
+        emf.setPackagesToScan("pl.kurs.equationsolver");
         emf.setDataSource(ds);
         return emf;
     }
